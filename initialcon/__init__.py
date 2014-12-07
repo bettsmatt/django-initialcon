@@ -38,13 +38,17 @@ urlpatterns = patterns('initialcon',
     url(r'^(?P<name>.+)$', 'generate', name='generate'),
 )
 
+# Returns the initials of the name
+def get_initials(name, sep=''):
+    return sep.join([word[0] for word in name.split(' ')[:2]])
+
 def generate(request, name):
     """
     Generate initialcons for a given name as a .png.
     Accepts custom size and font as query parameters.
     """
 
-    name = name.upper()
+    name = name.encode('utf-8').upper()
 
     # Custom size
     size = request.GET.get('size', False)
@@ -69,18 +73,21 @@ def generate(request, name):
     color = colors[color_index % len(colors)]
 
     # Take the first two initals
-    initials = ''.join([word[0] for word in name.split(' ')[:2]])
+    initials = get_initials(name)
     font = ImageFont.truetype(font, int(size*0.5))
     img = Image.new("RGBA", (size, size),color)
     draw = ImageDraw.Draw(img)
 
-    # Assume 1/8th of the font height is padding.
     w, h = font.getsize(initials)
-    left = (size - w) / 2
-    top = (size - h) / 2 - (size * 0.5) / 8
+
+    # account for vertical offset to center
+    h = h + font.getoffset(initials)[1]
+
+    x = (size - w) / 2
+    y = (size - h) / 2
 
     # Draw
-    draw.text((left, top), initials,font=font)
+    draw.text((x, y), initials,font=font)
     draw = ImageDraw.Draw(img)
 
     # Output as PNG
