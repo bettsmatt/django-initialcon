@@ -19,6 +19,10 @@ Preview
 Quick start
 -----------
 
+1. Install using PIP:
+::
+    pip install django-initialcon
+
 1. Add 'initialcon' to INSTALLED_APPS:
 ::
     INSTALLED_APPS = {
