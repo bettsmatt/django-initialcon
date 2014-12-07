@@ -14,24 +14,35 @@ from django.conf import settings
 
 # A font is required
 fonts = getattr(settings, 'INITIALCON_FONTS', None)
+
+
+# Default settings
+DEFAULT_SETTINGS = {
+    'INITIALCON_SIZE': 100,
+    'INITIALCON_SIZE_MAX': 200,
+    'INITIALCON_COLORS': [
+        (153,180,51), (0,163,0), (30,113,69), (255,0,151), (45,137,239),
+        (159,0,167), (0,171,169), (185,29,71),(227,162,26), (255,196,13),
+        (126,56,120), (96,60,186), (43,87,151), (218,83,44), (238,17,17)],
+    'INITIALCON_FONTS': None
+}
+
+# Try override
+fonts = getattr(settings, 'INITIALCON_FONTS', DEFAULT_SETTINGS['INITIALCON_FONTS'])
+colors = getattr(settings, 'INITIALCON_COLORS', DEFAULT_SETTINGS['INITIALCON_COLORS'])
+size_default = getattr(settings, 'INITIALCON_SIZE', DEFAULT_SETTINGS['INITIALCON_SIZE'])
+size_max = getattr(settings, 'INITIALCON_SIZE_MAX', DEFAULT_SETTINGS['INITIALCON_SIZE_MAX'])
+
+# Missing fonts
 if fonts is None:
     raise LookupError(
         """
-            INITIALCON_FONTS must be configured in your settings.py
-            INITIALCON_FONTS = {
-                'default': '<pathtofont>',
-                'special': '<pathtofont>'
-            }
+INITIALCON_FONTS must be configured in your settings.py
+INITIALCON_FONTS = {
+    'default': '<pathtofont>',
+    'special': '<pathtofont>'
+}
         """)
-
-size_default = getattr(settings, 'INITIALCON_SIZE', 100)
-size_max = getattr(settings, 'INITIALCON_SIZE_MAX', 200)
-
-# Metro
-colors = getattr(settings, 'INITIALCON_COLORS', [
-    (153,180,51), (0,163,0), (30,113,69), (255,0,151), (45,137,239),
-    (159,0,167), (0,171,169), (185,29,71),(227,162,26), (255,196,13),
-    (126,56,120), (96,60,186), (43,87,151), (218,83,44), (238,17,17)])
 
 # Single url for generating initialcons
 urlpatterns = patterns('initialcon',
@@ -80,7 +91,7 @@ def generate(request, name):
 
     w, h = font.getsize(initials)
 
-    # account for vertical offset to center
+    # Account for vertical offset to center
     h = h + font.getoffset(initials)[1]
 
     x = (size - w) / 2
