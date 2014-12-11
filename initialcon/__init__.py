@@ -56,7 +56,20 @@ urlpatterns = patterns(
 
 # Returns the initials of the name
 def get_initials(name, sep=''):
-    return sep.join([word[0] for word in name.split(' ')[:2]])
+    if name:
+
+        # grabs the first letter of each token in the name
+        initials = [word[0] for word in name.split()]
+
+        if len(initials) == 1:
+
+            # only one initial
+            return initials[0]
+
+        # join the first and last of multiple initials
+        return sep.join([initials[0], initials[-1]])
+
+    return ''
 
 
 def generate(request, name):
