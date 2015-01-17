@@ -56,6 +56,9 @@ urlpatterns = patterns(
 
 # Returns the initials of the name
 def get_initials(name, sep=''):
+
+    name = name.strip()
+
     if name:
 
         # grabs the first letter of each token in the name
