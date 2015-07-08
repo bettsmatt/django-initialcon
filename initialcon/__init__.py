@@ -50,7 +50,8 @@ INITIALCON_FONTS = {
 # Single url for generating initialcons
 urlpatterns = patterns(
     'initialcon',
-    url(r'^(?P<name>.+)$', 'generate', name='generate'),
+    # url(r'^(?P<name>.+)$', 'generate', name='generate'),
+    url(r'^(?P<name>.*)$', 'generate', name='generate'),
 )
 
 
@@ -72,7 +73,7 @@ def get_initials(name, sep=''):
         # join the first and last of multiple initials
         return sep.join([initials[0], initials[-1]])
 
-    return ''
+    return '?'
 
 
 def generate(request, name):
