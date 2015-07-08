@@ -73,7 +73,7 @@ def get_initials(name, sep=''):
         # join the first and last of multiple initials
         return sep.join([initials[0], initials[-1]])
 
-    return '?'
+    return ''
 
 
 def generate(request, name):
@@ -81,7 +81,8 @@ def generate(request, name):
     Generate initialcons for a given name as a .png.
     Accepts custom size and font as query parameters.
     """
-
+    if name == '':
+        name = '?'
     name = name.encode('utf-8').upper()
 
     # Custom size
