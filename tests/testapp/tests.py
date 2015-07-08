@@ -6,3 +6,6 @@ class ExampleTest(TestCase):
 
     def test_name_with_single_space_does_not_error(self):
         self.client.get(reverse('initialcon:generate', kwargs={'name': ' '}))
+
+    def test_empty_name_does_not_error(self):
+        self.client.get(reverse('initialcon:generate', kwargs={'name': ''}))

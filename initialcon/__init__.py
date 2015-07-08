@@ -50,7 +50,8 @@ INITIALCON_FONTS = {
 # Single url for generating initialcons
 urlpatterns = patterns(
     'initialcon',
-    url(r'^(?P<name>.+)$', 'generate', name='generate'),
+    # url(r'^(?P<name>.+)$', 'generate', name='generate'),
+    url(r'^(?P<name>.*)$', 'generate', name='generate'),
 )
 
 
@@ -80,7 +81,8 @@ def generate(request, name):
     Generate initialcons for a given name as a .png.
     Accepts custom size and font as query parameters.
     """
-
+    if name == '':
+        name = '?'
     name = name.encode('utf-8').upper()
 
     # Custom size
